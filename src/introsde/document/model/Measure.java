@@ -5,8 +5,12 @@ import introsde.document.dao.Assignment3Dao;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name= "Measure")
@@ -22,6 +26,7 @@ public class Measure implements Serializable
     private Long idMeasure;
     @Column(name="mid")
     private Long mid;
+    @Temporal(TemporalType.DATE)
     @Column(name="dateRegistered")
     private Date dateRegistered;
     @Column(name="measureType")
@@ -38,7 +43,11 @@ public class Measure implements Serializable
     public Long getMid() {return mid;}
     public void setMid(Long mid) {this.mid = mid;}
     public Date getDateRegistered() {return dateRegistered;}
-    public void setDateRegistered(Date dateRegistered) {this.dateRegistered = dateRegistered;}
+    public void setDateRegistered(String dateRegistered) throws ParseException {
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        Date date = format.parse(dateRegistered);
+        this.dateRegistered = date;
+    }
     public String getMeasureType() {return measureType;}
     public void setMeasureType(String measureType) {this.measureType = measureType;}
     public String getMeasureValue() {return measureValue;}

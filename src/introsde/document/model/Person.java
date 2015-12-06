@@ -23,6 +23,7 @@ public class Person implements Serializable
     private String firstname;
     @Column(name="lastname")
     private String lastname;
+
     private List<Measure> currentHealth;    //one for each type measure
     @OneToMany(mappedBy="person",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     private List<Measure> healthHistory;    //all measurements
@@ -35,7 +36,7 @@ public class Person implements Serializable
     public String getLastname() {return lastname;}
     public void setLastname(String lastname) {this.lastname = lastname;}
     public List<Measure> getCurrentHealth() {return currentHealth;}
-    public void setCurrentHealth(List<Measure> currentHealth) {this.currentHealth = currentHealth;}
+    //public void setCurrentHealth(List<Measure> currentHealth) {this.currentHealth = currentHealth;}
     public void setCurrentHealth() {this.currentHealth = Assignment3Dao.getCurrentHealth(this.getId());}
     public List<Measure> getHealthHistory() {return healthHistory;}
     public void setHealthHistory(List<Measure> healthHistory) {this.healthHistory = healthHistory;}

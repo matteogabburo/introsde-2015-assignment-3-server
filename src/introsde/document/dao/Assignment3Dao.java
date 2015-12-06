@@ -74,11 +74,16 @@ public enum Assignment3Dao {
     }
     public static Person getPersonById(Long id)
     {
-        String query = "SELECT p FROM Person p WHERE p.idPerson = "+id;
+        //String query = "SELECT p FROM Person p WHERE p.idPerson = "+id;
 
         EntityManager em = Assignment3Dao.instance.createEntityManager();
-        Person p = em.createQuery(query, Person.class).getSingleResult();
+        //Person p = em.createQuery(query, Person.class).getSingleResult();
+        Person p = em.find(Person.class, id);
+
+        System.out.println("\n\n\n\n\n\n\n\n\n\n"+p.getFirstname()+"\n"+p.getLastname()+"\n\n\n\n\n\n\n\n");
+
         Assignment3Dao.instance.closeConnections(em);
+
         return p;
     }
     public static List<Measure>getCurrentHealth(Long id)

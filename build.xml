@@ -57,6 +57,7 @@
     <property name="src.dir" value="src" />
     <property name="lib.dir" value="WebContent/WEB-INF/lib" />
     <property name="web.dir" value="." />
+    <property name="out.dir" value="out" />
 
     <!-- =================================
               target: resolve downloads the dependencies to your lib folder
@@ -97,7 +98,8 @@
 
     <target name="cleanHard" depends="clean">
         <echo message="Clean has been called" />
-        <delete dir="${ivy.jar.dir}" />
+        <delete dir="${ivy.jar.dir}" />	
+	<delete dir="${out.dir}" />
         <delete dir="${lib.dir}" />
     </target>
 
