@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.ArrayList;
 import java.util.List;
 
 public enum Assignment3Dao {
@@ -80,6 +81,36 @@ public enum Assignment3Dao {
         Assignment3Dao.instance.closeConnections(em);
         return p;
     }
+    public static List<Measure>getCurrentHealth(Long id)
+    {
+        String query1 = "SELECT DISTINCT m.measureType FROM Measure m";
+
+        EntityManager em = Assignment3Dao.instance.createEntityManager();
+        List<String> types = em.createQuery(query1, String.class).getResultList();
+
+        List<Measure> currentHealth = new ArrayList<>();
+        String type;
+        for(int i = 0; i < types.size(); i++)
+        {
+            type = types.get(i);
+
+            String query2 = "SELECT l"
+                    +" FROM Measure l "
+                    +" WHERE l.idPerson = " + id
+                    +" AND"
+                    +" l.measureType = \""+type+"\""
+                    +" AND"
+                    +" l.date = (SELECT MAX(m.dateRegistered)"
+                    +"  FROM Measure m"
+                    +"	WHERE m.measureType = \""+type+"\")";
+
+            currentHealth.add(em.createQuery(query1, Measure.class).getSingleResult());
+
+        }
+        Assignment3Dao.instance.closeConnections(em);
+
+        return currentHealth;
+    }
 
     //Queries for Measure
     public static List<Measure> readPersonHistory(Long id, String measureType)
@@ -91,7 +122,6 @@ public enum Assignment3Dao {
         Assignment3Dao.instance.closeConnections(em);
         return list;
     }
-
     public static List<String>readMeasureTypes()
     {
         String query = "SELECT DISTINCT m.measureType FROM Measure m";
@@ -101,7 +131,6 @@ public enum Assignment3Dao {
         Assignment3Dao.instance.closeConnections(em);
         return list;
     }
-
     public static Measure saveMeasure(Long id, Measure p)
     {
         EntityManager em = Assignment3Dao.instance.createEntityManager();

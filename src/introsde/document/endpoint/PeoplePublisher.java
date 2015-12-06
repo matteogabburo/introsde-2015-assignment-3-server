@@ -1,6 +1,8 @@
 package introsde.document.endpoint;
+
 import introsde.document.ws.PeopleImplementation;
 
+import javax.xml.ws.spi.Provider;
 import javax.xml.ws.Endpoint;
 
 public class PeoplePublisher {

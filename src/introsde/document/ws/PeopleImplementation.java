@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 //for understand the methods you can go to People.interface, there every methods have a small explaination
-@WebService(endpointInterface = "introsde.document.ws.PeopleImplementation")
+@WebService(endpointInterface = "introsde.document.ws.People", serviceName="PeopleService")
 public class PeopleImplementation implements People {
     @Override
     public List<Person> readPersonList() {return Person.getAll();}

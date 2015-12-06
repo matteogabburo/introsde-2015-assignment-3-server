@@ -36,11 +36,9 @@ public class Person implements Serializable
     public void setLastname(String lastname) {this.lastname = lastname;}
     public List<Measure> getCurrentHealth() {return currentHealth;}
     public void setCurrentHealth(List<Measure> currentHealth) {this.currentHealth = currentHealth;}
+    public void setCurrentHealth() {this.currentHealth = Assignment3Dao.getCurrentHealth(this.getId());}
     public List<Measure> getHealthHistory() {return healthHistory;}
     public void setHealthHistory(List<Measure> healthHistory) {this.healthHistory = healthHistory;}
-
-    //DB methods
-
 
     //Queries
     public static Person savePerson(Person p)
