@@ -4,9 +4,10 @@ import introsde.document.ws.PeopleImplementation;
 
 import javax.xml.ws.spi.Provider;
 import javax.xml.ws.Endpoint;
+import java.net.InetAddress;
 
 public class PeoplePublisher {
-    public static String SERVER_URL = "http://localhost";
+    public static String SERVER_URL = "https://guarded-anchorage-1835.herokuapp.com";
     public static String PORT = "6902";
     public static String BASE_URL = "/ws/people";
 
