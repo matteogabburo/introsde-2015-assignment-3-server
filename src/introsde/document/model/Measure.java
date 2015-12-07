@@ -4,6 +4,7 @@ import introsde.document.dao.Assignment3Dao;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,6 +15,7 @@ import java.util.Locale;
 
 @Entity
 @Table(name= "Measure")
+@NamedQuery(name = "Measure.findAll", query = "SELECT l FROM Measure l")
 @XmlRootElement
 public class Measure implements Serializable
 {
@@ -54,14 +56,41 @@ public class Measure implements Serializable
     public void setMeasureValue(String measureValue) {this.measureValue = measureValue;}
     public String getMeasureValueType() {return measureValueType;}
     public void setMeasureValueType(String measureValueType) {this.measureValueType = measureValueType;}
+    @XmlTransient
     public Person getPerson() {return person;}
     public void setPerson(Person person) {this.person = person;}
 
+    public Long getIdMeasure() {
+        return idMeasure;
+    }
+    public void setIdMeasure(Long idMeasure) {
+        this.idMeasure = idMeasure;
+    }
+    public void setDateRegistered(Date dateRegistered) {
+        this.dateRegistered = dateRegistered;
+    }
+
+
     //DB methods
+    public static List<Measure> getAll() {
+        EntityManager em = Assignment3Dao.instance.createEntityManager();
+        List<Measure> list = em.createNamedQuery("Measure.findAll", Measure.class).getResultList();
+        Assignment3Dao.instance.closeConnections(em);
+        return list;
+    }
+
     public static List<Measure> readPersonHistory(Long id, String measureType){return Assignment3Dao.readPersonHistory(id, measureType);}
     public static List<String> readMeasureTypes(){return Assignment3Dao.readMeasureTypes();}
 
-    public static Measure saveMeasure(Long id, Measure p){return Assignment3Dao.saveMeasure(id, p);}
+    public static Measure saveMeasure(Long id, Measure m){
+        Person p = Assignment3Dao.getPersonById(id);
+        m.setPerson(p);
+        return Assignment3Dao.saveMeasure(id, m);
+    }
     public static Measure updateMeasure(Long id, Measure p){return  Assignment3Dao.updateMeasure(id, p);}
     public static void deleteMeasure(Long id, Measure p){Assignment3Dao.deleteMeasure(id, p);}
+
+    public static List<Measure> readPersonMeasure(Long id, String measureType, Long mid) {
+        return Assignment3Dao.readPersonMeasure( id, measureType,mid);
+    }
 }

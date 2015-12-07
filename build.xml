@@ -123,4 +123,24 @@
             <classes dir="${build.dir}"/>
         </war>
     </target>
+
+
+
+
+ 	<target name="execute.server">
+                <echo message="app start in ${build.dir}" />
+                <java classname="introsde.document.endpoint.PeoplePublisher" classpath="${build.dir}" fork="true">
+                    <arg value="$JAVA_OPTS  -cp" />
+                    <classpath>
+                        <path location="build" />
+                        <fileset dir="WebContent/WEB-INF/lib">
+                            <include name="**/*.jar" />
+                            <include name="*.jar" />
+                        </fileset>
+                    </classpath>
+                </java>
+            </target>
+
+
+
 </project>

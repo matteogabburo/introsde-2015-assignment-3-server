@@ -1,5 +1,6 @@
 package introsde.document.ws;
 
+import introsde.document.dao.Assignment3Dao;
 import introsde.document.model.Measure;
 import introsde.document.model.Person;
 
@@ -32,6 +33,13 @@ public class PeopleImplementation implements People {
     public List<String> readMeasureTypes() {
         return Measure.readMeasureTypes();
     }
+
+    @Override
+    public List<Measure> readPersonMeasures(Long id, String measureType, Long mid)
+    {
+        return Measure.readPersonMeasure( id,  measureType,  mid);
+    }
+
     @Override
     public Measure savePersonMeasure(Long id, Measure m) {
         return Measure.saveMeasure(id, m);

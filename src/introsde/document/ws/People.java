@@ -66,12 +66,18 @@ public interface People {
     List<String>readMeasureTypes();
 
     //Method #8
+    //should return the list of Measures
+    @WebMethod(operationName = "readPersonMeasures")
+    @WebResult(name = "measures")
+    List<Measure>readPersonMeasures(Long id, String measureType, Long mid);
+
+    //Method #9
     //should return the value of {measureType} identified by {mid} for person identified by {id}
     @WebMethod(operationName = "savePersonMeasure")
     @WebResult(name = "measure")
     Measure savePersonMeasure(Long id, Measure measure);
 
-    //Method #9
+    //Method #10
     //should update the measure identified with {m.mid} related to the person identified by {id}
     @WebMethod(operationName = "updatePersonMeasure")
     @WebResult(name = "measure")

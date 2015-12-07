@@ -74,20 +74,16 @@ public enum Assignment3Dao {
     }
     public static Person getPersonById(Long id)
     {
-        //String query = "SELECT p FROM Person p WHERE p.idPerson = "+id;
-
         EntityManager em = Assignment3Dao.instance.createEntityManager();
-        //Person p = em.createQuery(query, Person.class).getSingleResult();
         Person p = em.find(Person.class, id);
-
-        System.out.println("\n\n\n\n\n\n\n\n\n\n"+p.getFirstname()+"\n"+p.getLastname()+"\n\n\n\n\n\n\n\n");
-
         Assignment3Dao.instance.closeConnections(em);
 
         return p;
     }
     public static List<Measure>getCurrentHealth(Long id)
     {
+        //TODO
+        /*
         String query1 = "SELECT DISTINCT m.measureType FROM Measure m";
 
         EntityManager em = Assignment3Dao.instance.createEntityManager();
@@ -114,18 +110,31 @@ public enum Assignment3Dao {
         }
         Assignment3Dao.instance.closeConnections(em);
 
-        return currentHealth;
+        return currentHealth;*/
+        return null;
     }
 
     //Queries for Measure
     public static List<Measure> readPersonHistory(Long id, String measureType)
     {
-        String query = "SELECT m FROM Measure m WHERE m.idPerson ="+ id + " AND m.measureType = "+measureType;
+        String query = "SELECT m FROM Measure m";// WHERE (m.idPerson ="+ id + ")";//AND (m.measureType = \'"+measureType+"\')";
 
         EntityManager em = Assignment3Dao.instance.createEntityManager();
         List<Measure> list = em.createQuery(query, Measure.class).getResultList();
         Assignment3Dao.instance.closeConnections(em);
-        return list;
+
+
+        //Remove the unused things
+        List<Measure> mList = new ArrayList<>();
+        Measure m;
+        for(int i = 0; i < list.size(); i++)
+        {
+            m = list.get(i);
+            if(m.getMeasureType() == measureType && m.getPerson().getId() == id)
+                mList.add(m);
+        }
+
+        return mList;
     }
     public static List<String>readMeasureTypes()
     {
@@ -165,5 +174,35 @@ public enum Assignment3Dao {
         em.remove(p);
         tx.commit();
         Assignment3Dao.instance.closeConnections(em);
+    }
+
+    public static List<Measure> getHealthHistory(Long id) {
+        String query = "SELECT * FROM Measure m WHERE m.idPerson =\'"+ id+"\'";
+
+        EntityManager em = Assignment3Dao.instance.createEntityManager();
+        List<Measure> list = em.createQuery(query, Measure.class).getResultList();
+        Assignment3Dao.instance.closeConnections(em);
+        return list;
+    }
+
+    public static List<Measure> readPersonMeasure(Long id, String measureType, Long mid) {
+        String query = "SELECT m FROM Measure m";//" WHERE m.idPerson ="+ id+" AND m.measureType = \'"+measureType+"\'" +
+                //"AND m.mid = "+mid;
+        EntityManager em = Assignment3Dao.instance.createEntityManager();
+        List<Measure> list = em.createQuery(query, Measure.class).getResultList();
+        Assignment3Dao.instance.closeConnections(em);
+
+
+        //Remove the unused things
+        List<Measure> mList = new ArrayList<>();
+        Measure m;
+        for(int i = 0; i < list.size(); i++)
+        {
+            m = list.get(i);
+            if(m.getMid() == mid && m.getMeasureType() == measureType && m.getPerson().getId() == id)
+                mList.add(m);
+        }
+
+        return list;
     }
 }
