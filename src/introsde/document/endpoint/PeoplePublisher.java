@@ -15,7 +15,7 @@ public class PeoplePublisher {
         String HOSTNAME = InetAddress.getLocalHost().getHostAddress();
         if (HOSTNAME.equals("127.0.0.1"))
         {
-            HOSTNAME = "localhost";
+            HOSTNAME = "https://guarded-anchorage-1835.herokuapp.com";
         }
         String PORT = "6902";
         String BASE_URL = "/ws/people";
