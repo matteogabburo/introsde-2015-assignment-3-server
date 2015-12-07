@@ -44,7 +44,12 @@ public enum Assignment3Dao {
         return p;
     }
     public static Person updatePerson(Person p)
-    {
+    {/*
+        p = new Person();
+        p.setId((long)151);
+        p.setFirstname("Mario");
+        p.setLastname("Rossi");*/
+
         EntityManager em = Assignment3Dao.instance.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -82,8 +87,6 @@ public enum Assignment3Dao {
     }
     public static List<Measure>getCurrentHealth(Long id)
     {
-        //TODO
-        /*
         String query1 = "SELECT DISTINCT m.measureType FROM Measure m";
 
         EntityManager em = Assignment3Dao.instance.createEntityManager();
@@ -110,8 +113,7 @@ public enum Assignment3Dao {
         }
         Assignment3Dao.instance.closeConnections(em);
 
-        return currentHealth;*/
-        return null;
+        return currentHealth;
     }
 
     //Queries for Measure
@@ -157,32 +159,53 @@ public enum Assignment3Dao {
     }
     public static Measure updateMeasure(Long id, Measure p)
     {
+        System.out.println("*****************************************************************************");
+
+
         EntityManager em = Assignment3Dao.instance.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        p = em.merge(p);
+        p=em.merge(p);
+        em.remove(p);
+        em.persist(p);
         tx.commit();
         Assignment3Dao.instance.closeConnections(em);
         return p;
     }
     public static void deleteMeasure(Long id, Measure p)
     {
-        EntityManager em = Assignment3Dao.instance.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        p=em.merge(p);
-        em.remove(p);
-        tx.commit();
-        Assignment3Dao.instance.closeConnections(em);
+        //List<Measure> mList= Assignment3Dao.getHealthHistory(id);
+
+        //for(int i = 0; i < mList.size(); i++)
+        //{
+            EntityManager em = Assignment3Dao.instance.createEntityManager();
+            EntityTransaction tx = em.getTransaction();
+            tx.begin();
+            p=em.merge(p);
+            em.remove(p);
+            tx.commit();
+            Assignment3Dao.instance.closeConnections(em);
+        //}
     }
 
     public static List<Measure> getHealthHistory(Long id) {
-        String query = "SELECT * FROM Measure m WHERE m.idPerson =\'"+ id+"\'";
+        String query = "SELECT m FROM Measure m";// WHERE m.idPerson =\'"+ id+"\'";
 
         EntityManager em = Assignment3Dao.instance.createEntityManager();
         List<Measure> list = em.createQuery(query, Measure.class).getResultList();
         Assignment3Dao.instance.closeConnections(em);
-        return list;
+
+        //Remove the unused things
+        List<Measure> mList = new ArrayList<>();
+        Measure m;
+        for(int i = 0; i < list.size(); i++)
+        {
+            m = list.get(i);
+            if(m.getPerson().getId() == id)
+                mList.add(m);
+        }
+
+        return mList;
     }
 
     public static List<Measure> readPersonMeasure(Long id, String measureType, Long mid) {

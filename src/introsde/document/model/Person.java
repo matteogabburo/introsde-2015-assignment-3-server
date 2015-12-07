@@ -58,6 +58,11 @@ public class Person implements Serializable
     }
     public static Person updatePerson(Person p)
     {
+        System.out.println("\n\n");
+        System.out.println(p.getFirstname());
+        System.out.println(p.getId());
+        System.out.println("\n\n");
+
         return p = Assignment3Dao.updatePerson(p);
     }
     public static void deletePerson(Long id)

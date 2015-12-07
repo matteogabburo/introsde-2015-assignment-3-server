@@ -15,7 +15,16 @@ import java.util.List;
 @WebService(endpointInterface = "introsde.document.ws.People", serviceName="PeopleService")
 public class PeopleImplementation implements People {
     @Override
-    public List<Person> readPersonList() {return Person.getAll();}
+    public List<Person> readPersonList() {
+
+        List<Person> pList = Person.getAll();
+        for(int i = 0; i < pList.size(); i++) {
+            pList.get(i).setCurrentHealth(Assignment3Dao.getCurrentHealth(pList.get(i).getId()));
+            pList.get(i).setHealthHistory(Assignment3Dao.getHealthHistory(pList.get(i).getId()));
+        }
+
+        return Person.getAll();
+    }
     @Override
     public Person readPerson(Long id) {return Person.getPersonById(id);}
     @Override
@@ -23,7 +32,11 @@ public class PeopleImplementation implements People {
     @Override
     public Person createPerson(Person person) {return Person.savePerson(person);}
     @Override
-    public void deletePerson(Long id) {Person.deletePerson(id);}
+    public void deletePerson(Long id)
+    {
+        Measure.deleteMeasure(id, new Measure());
+        Person.deletePerson(id);
+    }
 
     @Override
     public List<Measure> readPersonHistory(Long id, String measureType) {
@@ -46,6 +59,9 @@ public class PeopleImplementation implements People {
     }
     @Override
     public Measure updatePersonMeasure(Long id, Measure m) {
-        return Measure.updateMeasure(id, m);
+
+        Measure.deleteMeasure(id, m);
+        return Measure.saveMeasure(id, m);
+        //return Measure.updateMeasure(id, m);
     }
 }
