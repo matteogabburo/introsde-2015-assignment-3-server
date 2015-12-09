@@ -125,18 +125,22 @@ public enum Assignment3Dao {
         List<Measure> list = em.createQuery(query, Measure.class).getResultList();
         Assignment3Dao.instance.closeConnections(em);
 
+        System.out.println("\n\n\n\n"+measureType+"\n\n\n\n");
 
-        //Remove the unused things
+        /*Remove the unused things
         List<Measure> mList = new ArrayList<>();
         Measure m;
         for(int i = 0; i < list.size(); i++)
         {
             m = list.get(i);
-            if(m.getMeasureType() == measureType && m.getPerson().getId() == id)
-                mList.add(m);
-        }
 
-        return mList;
+            if(m.getMeasureType().equals(measureType) && m.getPerson().getId() == id)
+            {
+                mList.add(m);
+            }
+        }*/
+
+        return list;
     }
     public static List<String>readMeasureTypes()
     {
