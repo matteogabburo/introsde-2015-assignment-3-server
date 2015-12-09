@@ -1,5 +1,5 @@
 package introsde.document.endpoint;
-import introsde.document.ws.PeopleImpl;
+import introsde.document.ws.PeopleImplementation;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
