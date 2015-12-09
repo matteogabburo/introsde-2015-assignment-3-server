@@ -5,6 +5,7 @@ import introsde.document.model.Measure;
 import introsde.document.model.Person;
 
 import javax.jws.WebService;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,12 +19,16 @@ public class PeopleImplementation implements People {
     public List<Person> readPersonList() {
 
         List<Person> pList = Person.getAll();
+        List<Person> res = new ArrayList<>();
+        Person tmp;
         for(int i = 0; i < pList.size(); i++) {
-            pList.get(i).setCurrentHealth(Assignment3Dao.getCurrentHealth(pList.get(i).getId()));
-            pList.get(i).setHealthHistory(Assignment3Dao.getHealthHistory(pList.get(i).getId()));
+            tmp = pList.get(i);
+            tmp.setCurrentHealth(Assignment3Dao.getCurrentHealth(pList.get(i).getId()));
+            tmp.setHealthHistory(Assignment3Dao.getHealthHistory(pList.get(i).getId()));
+            res.add(tmp);
         }
 
-        return Person.getAll();
+        return res;
     }
     @Override
     public Person readPerson(Long id) {return Person.getPersonById(id);}

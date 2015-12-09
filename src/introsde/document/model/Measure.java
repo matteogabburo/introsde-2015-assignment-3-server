@@ -71,6 +71,7 @@ public class Measure implements Serializable
     }
 
 
+
     //DB methods
     public static List<Measure> getAll() {
         EntityManager em = Assignment3Dao.instance.createEntityManager();
@@ -85,8 +86,18 @@ public class Measure implements Serializable
     public static Measure saveMeasure(Long id, Measure m){
         Person p = Assignment3Dao.getPersonById(id);
         m.setPerson(p);
+
+        //set mid
+        m.setMid(Measure.getMaxMid(p) + 1);
+
         return Assignment3Dao.saveMeasure(id, m);
     }
+
+    private static Long getMaxMid(Person p)
+    {
+        return Assignment3Dao.getMaxMid(p.getId());
+    }
+
     public static Measure updateMeasure(Long id, Measure p){return  Assignment3Dao.updateMeasure(id, p);}
     public static void deleteMeasure(Long id, Measure p){Assignment3Dao.deleteMeasure(id, p);}
 

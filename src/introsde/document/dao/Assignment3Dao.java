@@ -92,28 +92,62 @@ public enum Assignment3Dao {
         EntityManager em = Assignment3Dao.instance.createEntityManager();
         List<String> types = em.createQuery(query1, String.class).getResultList();
 
+        System.out.println("\n\n\n"+id+"\n\n\n");
+
         List<Measure> currentHealth = new ArrayList<>();
         String type;
-        for(int i = 0; i < types.size(); i++)
-        {
-            type = types.get(i);
 
-            String query2 = "SELECT l"
-                    +" FROM Measure l "
-                    +" WHERE l.idPerson = " + id
-                    +" AND"
-                    +" l.measureType = \""+type+"\""
-                    +" AND"
-                    +" l.date = (SELECT MAX(m.dateRegistered)"
-                    +"  FROM Measure m"
-                    +"	WHERE m.measureType = \""+type+"\")";
+        if(Assignment3Dao.countMeasure(id) > 0) {
+            for (int i = 0; i < types.size(); i++) {
+                type = types.get(i);
 
-            currentHealth.add(em.createQuery(query1, Measure.class).getSingleResult());
+                String query2 = "SELECT l.idMeasure " +
+                        " FROM Measure l " +
+                        " WHERE idPerson = " + id + "" +
+                        " AND " +
+                        " l.dateRegistered = (" +
+                        " SELECT MAX(m.dateRegistered) " +
+                        " FROM Measure m" +
+                        " WHERE m.measureType = \"" + type + "\" )";
 
+                List<Number> tmp = (List<Number>) em.createNativeQuery(query2).getResultList();
+                if (tmp != null)
+                    currentHealth.add(Assignment3Dao.getMeasureById(tmp.get(0).longValue()));
+            }
         }
         Assignment3Dao.instance.closeConnections(em);
 
+
+        System.out.println("\n\n_______________________________________\n\n");
+        for(int i = 0; i < currentHealth.size(); i++)
+            System.out.println(currentHealth.get(i).getIdMeasure());
+        System.out.println("\n\n_______________________________________\n\n");
+
+
         return currentHealth;
+    }
+
+    private static int countMeasure(Long id) {
+        String query = "SELECT m FROM Measure m";// WHERE (m.idPerson ="+ id + ")";//AND (m.measureType = \'"+measureType+"\')";
+
+        EntityManager em = Assignment3Dao.instance.createEntityManager();
+        List<Measure> list = em.createQuery(query, Measure.class).getResultList();
+        Assignment3Dao.instance.closeConnections(em);
+
+        int counter = 0;
+        for(int i = 0; i < list.size(); i++)
+            if(list.get(i).getPerson().getId() == id)
+                counter++;
+
+        return counter;
+    }
+
+    private static Measure getMeasureById(Long id) {
+        EntityManager em = Assignment3Dao.instance.createEntityManager();
+        Measure m = em.find(Measure.class, id);
+        Assignment3Dao.instance.closeConnections(em);
+
+        return m;
     }
 
     //Queries for Measure
@@ -124,8 +158,6 @@ public enum Assignment3Dao {
         EntityManager em = Assignment3Dao.instance.createEntityManager();
         List<Measure> list = em.createQuery(query, Measure.class).getResultList();
         Assignment3Dao.instance.closeConnections(em);
-
-        System.out.println("\n\n\n\n"+measureType+"\n\n\n\n");
 
         /*Remove the unused things
         List<Measure> mList = new ArrayList<>();
@@ -231,5 +263,16 @@ public enum Assignment3Dao {
         }
 
         return list;
+    }
+
+    public static Long getMaxMid(Long id)
+    {
+        String query = "SELECT MAX(mid) FROM Measure WHERE idPerson = "+id;
+        //"AND m.mid = "+mid;
+        EntityManager em = Assignment3Dao.instance.createEntityManager();
+        Long mid = ((Number) em.createNativeQuery(query).getSingleResult()).longValue();
+        Assignment3Dao.instance.closeConnections(em);
+
+        return mid;
     }
 }

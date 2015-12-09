@@ -41,7 +41,7 @@ public class Person implements Serializable
         return currentHealth;
     }
     public void setCurrentHealth(List<Measure> currentHealth) {
-        this.currentHealth = Assignment3Dao.getCurrentHealth(this.getId());
+        this.currentHealth = currentHealth;//Assignment3Dao.getCurrentHealth(this.getId());
     }
     public void setCurrentHealth() {this.currentHealth = Assignment3Dao.getCurrentHealth(this.getId());}
     public List<Measure> getHealthHistory() {
@@ -71,7 +71,6 @@ public class Person implements Serializable
     }
     public static List<Person> getAll()
     {
-
         return Assignment3Dao.getAll();
     }
     public static Person getPersonById(Long id){return Assignment3Dao.getPersonById(id);}
