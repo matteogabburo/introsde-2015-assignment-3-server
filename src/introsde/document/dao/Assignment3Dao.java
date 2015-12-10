@@ -159,19 +159,6 @@ public enum Assignment3Dao {
         List<Measure> list = em.createQuery(query, Measure.class).getResultList();
         Assignment3Dao.instance.closeConnections(em);
 
-        /*Remove the unused things
-        List<Measure> mList = new ArrayList<>();
-        Measure m;
-        for(int i = 0; i < list.size(); i++)
-        {
-            m = list.get(i);
-
-            if(m.getMeasureType().equals(measureType) && m.getPerson().getId() == id)
-            {
-                mList.add(m);
-            }
-        }*/
-
         return list;
     }
     public static List<String>readMeasureTypes()
@@ -197,7 +184,6 @@ public enum Assignment3Dao {
     {
         System.out.println("*****************************************************************************");
 
-
         EntityManager em = Assignment3Dao.instance.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -206,14 +192,11 @@ public enum Assignment3Dao {
         em.persist(p);
         tx.commit();
         Assignment3Dao.instance.closeConnections(em);
+
         return p;
     }
     public static void deleteMeasure(Long id, Measure p)
     {
-        //List<Measure> mList= Assignment3Dao.getHealthHistory(id);
-
-        //for(int i = 0; i < mList.size(); i++)
-        //{
             EntityManager em = Assignment3Dao.instance.createEntityManager();
             EntityTransaction tx = em.getTransaction();
             tx.begin();
@@ -221,7 +204,6 @@ public enum Assignment3Dao {
             em.remove(p);
             tx.commit();
             Assignment3Dao.instance.closeConnections(em);
-        //}
     }
 
     public static List<Measure> getHealthHistory(Long id) {

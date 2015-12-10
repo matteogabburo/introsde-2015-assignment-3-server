@@ -84,16 +84,10 @@ public class Measure implements Serializable
     public static List<String> readMeasureTypes(){return Assignment3Dao.readMeasureTypes();}
 
     public static Measure saveMeasure(Long id, Measure m){
-        Person p = Assignment3Dao.getPersonById(id);
-        m.setPerson(p);
-
-        //set mid
-        m.setMid(Measure.getMaxMid(p) + 1);
-
         return Assignment3Dao.saveMeasure(id, m);
     }
 
-    private static Long getMaxMid(Person p)
+    public static Long getMaxMid(Person p)
     {
         return Assignment3Dao.getMaxMid(p.getId());
     }

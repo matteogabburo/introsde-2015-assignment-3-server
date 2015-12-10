@@ -39,7 +39,7 @@ public class PeopleImplementation implements People {
     @Override
     public void deletePerson(Long id)
     {
-        Measure.deleteMeasure(id, new Measure());
+        //Measure.deleteMeasure(id, new Measure());
         Person.deletePerson(id);
     }
 
@@ -60,13 +60,24 @@ public class PeopleImplementation implements People {
 
     @Override
     public Measure savePersonMeasure(Long id, Measure m) {
+        Person p = Assignment3Dao.getPersonById(id);
+        m.setPerson(p);
+        //set mid
+        m.setMid(Measure.getMaxMid(p) + 1);
+
         return Measure.saveMeasure(id, m);
     }
     @Override
     public Measure updatePersonMeasure(Long id, Measure m) {
 
+        /*Long mid = m.getMid();
+
         Measure.deleteMeasure(id, m);
-        return Measure.saveMeasure(id, m);
-        //return Measure.updateMeasure(id, m);
+        Person p = Assignment3Dao.getPersonById(id);
+        m.setPerson(p);
+        m.setMid(mid);*/
+
+        //return Measure.saveMeasure(id, m);
+        return Measure.updateMeasure(id, m);
     }
 }
