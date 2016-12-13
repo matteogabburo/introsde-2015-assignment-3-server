@@ -70,12 +70,12 @@ public class PeopleImplementation implements People {
     @Override
     public Measure updatePersonMeasure(Long id, Measure m) {
 
-        /*Long mid = m.getMid();
+        Long mid = m.getMid();
 
         Measure.deleteMeasure(id, m);
         Person p = Assignment3Dao.getPersonById(id);
         m.setPerson(p);
-        m.setMid(mid);*/
+        m.setMid(mid);
 
         //return Measure.saveMeasure(id, m);
         return Measure.updateMeasure(id, m);
